@@ -21,11 +21,17 @@ class RLWEParameters:
     #: optionally `sage.all.oo` for allowing infinitely many samples.
     m: int = oo
 
+    n: int = 1  #: The dimension of the vector of polynomials sampled.
+
     tag: str = None  #: a name for the patameter set
 
     def __post_init__(self, **kwds):
         self.Xs = copy(self.Xs)
-        self.Xs.n = 1  # RLWE instances are a dot product of two polynomials.
+        self.Xs.n = self.n
+        if self.n != 1:
+            raise ValueError(
+                "RLWE security estimation only supports dimension 1, "
+                f"but {self.n} was given")
 
         log_N = math.log2(self.N)
         if not log_N.is_integer():
