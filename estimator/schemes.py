@@ -1,5 +1,6 @@
 from .nd import NoiseDistribution, stddevf
 from .lwe_parameters import LWEParameters
+from .rlwe_parameters import RLWEParameters
 
 # NIST PQC Round 3 Finalists
 
@@ -193,13 +194,14 @@ TFHE630 = LWEParameters(
     tag="TFHE630",
 )
 # - Bootstrapping key (Ring-LWE)
-TFHE1024 = LWEParameters(
-    n=1024,
+TFHE1024 = RLWEParameters(
+    n=1,
+    N=1024,
     q=2 ** 32,
     Xs=NoiseDistribution.UniformMod(2),
     Xe=NoiseDistribution.DiscreteGaussian(stddev=2 ** (-25) * 2 ** 32),
     tag="TFHE1024",
-)
+).as_lwe_params()
 
 # CONCRETE default parameter set for 128-bit security, chosen for
 # faster boolean circuit evalutation than the TFHE_LIB parameters.
@@ -214,13 +216,14 @@ Concrete_TFHE586 = LWEParameters(
     tag="Concrete_TFHE586",
 )
 # - Bootstrapping key (Ring-LWE)
-Concrete_TFHE512 = LWEParameters(
-    n=512,
+Concrete_TFHE512 = RLWEParameters(
+    n=2,
+    N=512,
     q=2 ** 32,
     Xs=NoiseDistribution.UniformMod(2),
     Xe=NoiseDistribution.DiscreteGaussian(stddev=2 ** (-24.8) * 2 ** 32),
     tag="Concrete_TFHE512",
-)
+).as_lwe_params()
 
 # https://eprint.iacr.org/2018/421.pdf
 # Table 3, page 55
